@@ -14,6 +14,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\TransactionController;
+
+
+Route::post('/users', [UserController::class, 'create']);
+Route::post('/login', [UserController::class, 'login']);
+
+
+Route::middleware('auth:sanctum')->group(function (){
+    Route::get('/user', [UserController::class, 'user']);
+    Route::get('/', [TransactionController::class, 'showTransactions']);
+    Route::get('/deposit', [TransactionController::class, 'showDeposits']);
+    Route::post('/deposit', [TransactionController::class, 'deposit']);
+    Route::get('/withdrawal', [TransactionController::class, 'showWithdrawals']);
+    Route::post('/withdrawal', [TransactionController::class, 'withdrawal']);
 });
+
+
